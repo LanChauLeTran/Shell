@@ -1,4 +1,5 @@
 #include "folder.h"
+#include <algorithm>
 #define BOLDBLUE "\033[1m\033[34m"  
 #define RESET "\033[0m"
 
@@ -37,14 +38,13 @@ int Folder::getSize() const{
 
 void Folder:: touch(const string& fileName){
 	bool exist = false;
-	for (auto i: files){
-		if(i.getName() == fileName)
+	for (auto &i: files){
+		if(i.getName() == fileName){
 			exist = true;
+			i.updateTime();
+		}
 	}
-	if(exist){
-		//update time stamp
-	}
-	else{
+	if(!exist){
 		files.push_back(File(fileName));
 	}
 }
@@ -56,7 +56,7 @@ void Folder::mkdir(const string& dirName){
 			exist = true;
 	}
 	if(exist){
-		//update time stamp
+		cout << "mkdir: '" << dirName << "' directory already exists." << endl;
 	}
 	else{
 		auto newFolder = new Folder();
@@ -122,4 +122,53 @@ void Folder::pwd(){
 	}
 	path = "/" + cur->name + "/" + path;
 	cout << path << endl;
+}
+
+void Folder::rmdir(const string& dir){
+	bool exist = false;
+	for (int i = 0; i < folders.size(); i++){
+		if(folders[i]->getName() == dir){
+			exist = true;
+			delete folders[i];
+			folders.erase(folders.begin() + i);
+		}
+	}
+	if(!exist){
+		cout << "rmdir: directory does not exist" << endl;
+	}
+	/*
+	auto foundIt = find_if(folders.begin(), folders.end(), [dir](auto curDir) {
+		return curDir->name == dir;
+	});
+	if(foundIt == folders.end()) {
+		cout << "rmdir: directory does not exist" << endl;
+		return;
+	}
+	delete *foundIt;
+	folders.erase(foundIt);*/
+}
+
+void Folder::rm(const string& target){
+	bool exist = false;
+	for (int i = 0; i < files.size(); i++){
+		if(files[i].getName() == target){
+			files.erase(files.begin() + i);
+			exist = true;
+		}
+	}
+	if(!exist){
+		cout << "rm: cannot remove '" << target << "': No such file" << endl;
+	}
+
+/*
+	bool exist = false;
+	for(auto i = files.begin(); i != files.end(); i++){
+		if(i->getName() == target){
+			files.erase(i);
+			exist = true;
+		}
+	}
+	if(!exist){
+		cout << "rm: cannot remove '" << target << "': No such file" << endl;
+	}*/
 }

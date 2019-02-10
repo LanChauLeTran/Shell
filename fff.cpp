@@ -52,7 +52,12 @@ int main(){
 			curDir->pwd();
 		}
 		else if(parsed[i] == "rmdir"){
-			
+			if(inputSize < 2) {
+				cout << "rmdir: missing operand" << endl;
+			}
+			else{
+				curDir->rmdir(parsed[1]);
+			}
 		}
 		else if(parsed[i] == "mkdir"){
 			if(inputSize < 2){
@@ -63,7 +68,12 @@ int main(){
 			}
 		}
 		else if(parsed[i] == "rm"){
-			cout << "call rm function" << endl;
+			if(inputSize < 2){
+				cout << "rm: missing operand" << endl;
+			}
+			else{
+				curDir->rm(parsed[1]);
+			}
 		}
 		else if(parsed[i] == "chmod"){
 			cout << "call chmod function" << endl;
@@ -78,11 +88,14 @@ int main(){
 				}
 			}
 		}
-
-		parsed.clear();
-		 
-		if(input == "exit" || input == "quit")
+		else if(input == "exit" || input == "quit"){
 			cont = false;
+		}
+		else{
+			cout << "Invalid cmd" << endl;
+		}
+		
+		parsed.clear();
 	}
 	
 	return 0;

@@ -30,6 +30,8 @@ class Folder{
 		void lsl() const;
 		Folder* cd(const string& name) const;
 		void pwd();
+		void rmdir(const string& dir);
+		void rm(const string& target);
 };
 
 #endif

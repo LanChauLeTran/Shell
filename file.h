@@ -16,12 +16,15 @@ class File{
 		string timeStamp;
 		int fileSize;
 	public:
+		File();
 		File(const string& fileName);
 
 		string getName() const;
 		string getPerm() const;
 		string getTime() const;
 		int getSize() const;
+
+		void updateTime();
 };
 
 #endif

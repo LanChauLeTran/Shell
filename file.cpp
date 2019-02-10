@@ -26,3 +26,10 @@ string File::getTime() const{
 int File::getSize() const{
 	return fileSize;
 }
+
+void File::updateTime(){
+	time_t now = time(0);
+	char* temp = ctime(&now);
+	temp[strlen(temp)-1] = '\0';
+	timeStamp = temp;
+}
