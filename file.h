@@ -1,8 +1,10 @@
-#ifndef CLASSES_H
-#define CLASSES_H
+#ifndef FILE_H
+#define FILE_H
 
-#include <vector>
+#include <iostream>
+#include <cstring>
 #include <string>
+#include <vector>
 #include <ctime>
 
 using namespace std;
@@ -10,13 +12,16 @@ using namespace std;
 class File{
 	private:
 		string name;
-		string parent;
-		vector<string> permissions;
-		char* timeStamp;
+		string permissions;
+		string timeStamp;
 		int fileSize;
 	public:
-		File();
+		File(const string& fileName);
+
 		string getName() const;
+		string getPerm() const;
+		string getTime() const;
+		int getSize() const;
 };
 
 #endif
