@@ -37,18 +37,19 @@ int main(){
 		}
 		else if(parsed[i] == "cd"){
 			if(inputSize == 2){
-				cout << curDir->getName() << endl;
-				
 				if(parsed[1] != ".." && parsed[1] != "../"){
 					curDir = curDir->cd(parsed[1]);
 				}
 				else if(parsed[1] == ".." || parsed[1] == "../"){
 					curDir = curDir->getParent();
 				}
-			}	
+			}
+			else if(inputSize == 1){
+				curDir = &root;
+			}
 		}
 		else if(parsed[i] == "pwd"){
-			cout << "call pwd function" << endl;
+			curDir->pwd();
 		}
 		else if(parsed[i] == "rmdir"){
 			

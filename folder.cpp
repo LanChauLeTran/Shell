@@ -62,10 +62,6 @@ void Folder::mkdir(const string& dirName){
 		auto newFolder = new Folder();
 		newFolder->parent = this;
 		newFolder->name = dirName;
-
-		cout << "newFolder name: " << newFolder->getName() << endl;
-		cout << "parent name: " << newFolder->parent->name << endl;
-
 		newFolder->permissions = "rwxrwxrwx";
 		time_t now = time(0);
 		char* temp = ctime(&now);
@@ -115,4 +111,15 @@ Folder* Folder::cd(const string& name) const{
 	if(exist){
 		return found;
 	}
+}
+
+void Folder::pwd(){
+	string path = "";
+	Folder* cur = this;
+	while(cur->parent != nullptr){
+		path = cur->name + "/" +  path;
+		cur = cur->parent;
+	}
+	path = "/" + cur->name + "/" + path;
+	cout << path << endl;
 }

@@ -14,7 +14,7 @@ class Folder{
 		vector<Folder* > folders;
 	
 	public:
-		Folder(): name("/"), parent(nullptr) {}
+		Folder(): name("home"), parent(nullptr) {}
 		Folder(const string& folderName);
 		~Folder();
 
@@ -29,6 +29,7 @@ class Folder{
 		void ls() const;
 		void lsl() const;
 		Folder* cd(const string& name) const;
+		void pwd();
 };
 
 #endif
