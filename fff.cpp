@@ -1,5 +1,7 @@
 #include <sstream>
 #include "folder.h"
+#define BOLDBLUE "\033[1m\033[34m"  
+#define RESET "\033[0m"
 
 using namespace std;
 
@@ -13,7 +15,7 @@ int main(){
 	string token;
 
 	while(cont){
-		cout << "user:" << curDir->getName() << "$ ";
+		cout << BOLDBLUE << curDir->getName() << RESET << "$ ";
 
 		getline(cin, input);
 		istringstream ss(input);
@@ -34,11 +36,16 @@ int main(){
 			}
 		}
 		else if(parsed[i] == "cd"){
-			/*if(inputSize == 2){
-				if(parsed[1] != ".." || parsed[1] != "../"){
+			if(inputSize == 2){
+				cout << curDir->getName() << endl;
+				
+				if(parsed[1] != ".." && parsed[1] != "../"){
 					curDir = curDir->cd(parsed[1]);
 				}
-			}	*/
+				else if(parsed[1] == ".." || parsed[1] == "../"){
+					curDir = curDir->getParent();
+				}
+			}	
 		}
 		else if(parsed[i] == "pwd"){
 			cout << "call pwd function" << endl;

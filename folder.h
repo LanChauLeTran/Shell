@@ -22,12 +22,13 @@ class Folder{
 		string getPerm() const;
 		string getTime() const;
 		int getSize() const;
+		Folder* getParent() { return parent; }
 
 		void touch(const string& fileName);
 		void mkdir(const string& dirName);
 		void ls() const;
 		void lsl() const;
-		//Folder* cd(const string)
+		Folder* cd(const string& name) const;
 };
 
 #endif

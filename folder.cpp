@@ -3,7 +3,7 @@
 #define RESET "\033[0m"
 
 Folder::Folder(const string& folderName){
-	name = "/" + folderName;
+	name = folderName;
 	permissions = "rwxrwxrwx";
 	parent = this;
 	time_t now = time(0);
@@ -59,9 +59,13 @@ void Folder::mkdir(const string& dirName){
 		//update time stamp
 	}
 	else{
-		Folder* newFolder = new Folder();
+		auto newFolder = new Folder();
 		newFolder->parent = this;
 		newFolder->name = dirName;
+
+		cout << "newFolder name: " << newFolder->getName() << endl;
+		cout << "parent name: " << newFolder->parent->name << endl;
+
 		newFolder->permissions = "rwxrwxrwx";
 		time_t now = time(0);
 		char* temp = ctime(&now);
@@ -96,5 +100,19 @@ void Folder::lsl() const{
 			 << '\t' << i->getTime()
 			 << '\t' << i->getName()
 			 << endl;
+	}
+}
+
+Folder* Folder::cd(const string& name) const{
+	bool exist = false;
+	Folder* found;
+	for (auto i: folders){
+		if(i->getName() == name){
+			exist = true;
+			found = i;
+		}
+	}
+	if(exist){
+		return found;
 	}
 }
