@@ -25,6 +25,7 @@ class File{
 		int getSize() const;
 
 		void updateTime();
+		void setPerm(const string& newPerm);
 };
 
 #endif

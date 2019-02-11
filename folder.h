@@ -14,7 +14,7 @@ class Folder{
 		vector<Folder* > folders;
 	
 	public:
-		Folder(): name("home"), parent(nullptr) {}
+		Folder(): name("root"), parent(nullptr) {}
 		Folder(const string& folderName);
 		~Folder();
 
@@ -22,16 +22,20 @@ class Folder{
 		string getPerm() const;
 		string getTime() const;
 		int getSize() const;
-		Folder* getParent() { return parent; }
+		Folder* getParent();
+		
+		void setPerm(const string& newPerm);
+		void updateTime();
 
 		void touch(const string& fileName);
 		void mkdir(const string& dirName);
 		void ls() const;
 		void lsl() const;
-		Folder* cd(const string& name) const;
+		Folder* cd(const string& name);
 		void pwd();
 		void rmdir(const string& dir);
 		void rm(const string& target);
+		void chmod(const string& obj, const string& perm);
 };
 
 #endif

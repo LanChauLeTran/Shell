@@ -1,5 +1,6 @@
 #include "folder.h"
 #include <algorithm>
+#include <map>
 #define BOLDBLUE "\033[1m\033[34m"  
 #define RESET "\033[0m"
 
@@ -34,6 +35,12 @@ string Folder::getTime() const{
 
 int Folder::getSize() const{
 	return folderSize;
+}
+
+Folder* Folder::getParent(){
+	if(parent != nullptr){
+		return parent;
+	}
 }
 
 void Folder:: touch(const string& fileName){
@@ -94,12 +101,12 @@ void Folder::lsl() const{
 		cout << "d" << i->getPerm()
 			 << '\t' << i->getSize()
 			 << '\t' << i->getTime()
-			 << '\t' << i->getName()
+			 << '\t' << BOLDBLUE << i->getName() << RESET 
 			 << endl;
 	}
 }
 
-Folder* Folder::cd(const string& name) const{
+Folder* Folder::cd(const string& name){
 	bool exist = false;
 	Folder* found;
 	for (auto i: folders){
@@ -110,6 +117,10 @@ Folder* Folder::cd(const string& name) const{
 	}
 	if(exist){
 		return found;
+	}
+	else{
+		cout << "bash: cd: " << name << ": no such directory" << endl;
+		return this;
 	}
 }
 
@@ -171,4 +182,71 @@ void Folder::rm(const string& target){
 	if(!exist){
 		cout << "rm: cannot remove '" << target << "': No such file" << endl;
 	}*/
+}
+
+void Folder::chmod(const string& obj, const string& perm){
+	map<string, string> permValues;
+	permValues.insert(pair<string, string>("0", "---"));
+	permValues.insert(pair<string, string>("1", "--x"));
+	permValues.insert(pair<string, string>("3", "-wx"));
+	permValues.insert(pair<string, string>("4", "r--"));
+	permValues.insert(pair<string, string>("5", "r-x"));
+	permValues.insert(pair<string, string>("6", "rw-"));
+	permValues.insert(pair<string, string>("7", "rwx"));	
+
+	string newPerm = "";
+	bool fileExist = false;
+	bool folderExist = false;
+	int indexOfFile;
+	int indexOfFolder;
+	
+
+	for (int i = 0; i < perm.size(); i++){
+		if(perm[i] < '0' || perm[i] > '7'){
+			cout << "chmod: invalid mode: " << obj << endl;
+			return;
+		}
+		else{
+			string find = "";
+			find = perm[i];
+			newPerm = newPerm + permValues.find(find)->second;
+		}
+	}
+
+	for (int i =  0; i < files.size(); i++){
+		if(files[i].getName() == obj){
+			fileExist = true;
+			indexOfFile = i;
+		}
+	}
+	for (int i = 0; i < folders.size(); i++){
+		if(folders[i]->getName() == obj){
+			folderExist = true;
+			indexOfFolder = i;
+		}
+	}
+
+	if(!fileExist && !folderExist){
+		cout << "chmod: invalid mode: " << obj << endl;
+		return;
+	}
+	else if(fileExist){
+		files[indexOfFile].setPerm(newPerm);
+		files[indexOfFile].updateTime();
+	}
+	else if(folderExist){
+		folders[indexOfFolder]->setPerm(newPerm);
+		folders[indexOfFolder]->updateTime();
+	}
+}
+
+void Folder::setPerm(const string& newPerm){
+	permissions = newPerm;
+}
+
+void Folder::updateTime(){
+	time_t now = time(0);
+	char* temp = ctime(&now);
+	temp[strlen(temp)-1] = '\0';
+	timeStamp = temp;
 }

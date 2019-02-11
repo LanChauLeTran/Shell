@@ -1,5 +1,9 @@
 #include <sstream>
 #include "folder.h"
+#include <cctype>
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <algorithm>
 #define BOLDBLUE "\033[1m\033[34m"  
 #define RESET "\033[0m"
 
@@ -41,7 +45,12 @@ int main(){
 					curDir = curDir->cd(parsed[1]);
 				}
 				else if(parsed[1] == ".." || parsed[1] == "../"){
-					curDir = curDir->getParent();
+					if(curDir->getName() == "root"){
+						cout << "cd: no parent exist in root" << endl;
+					}
+					else{
+						curDir = curDir->getParent();
+					}
 				}
 			}
 			else if(inputSize == 1){
@@ -76,7 +85,13 @@ int main(){
 			}
 		}
 		else if(parsed[i] == "chmod"){
-			cout << "call chmod function" << endl;
+			int permissionSize = parsed[1].size();
+			if(inputSize == 3 && permissionSize == 3){
+				curDir->chmod(parsed[2], parsed[1]);
+			}
+			else{
+				cout << "chmod: invalid code: " << parsed[2] << endl;
+			}
 		}
 		else if(parsed[i] == "touch"){
 			if(inputSize < 2){
@@ -94,7 +109,7 @@ int main(){
 		else{
 			cout << "Invalid cmd" << endl;
 		}
-		
+
 		parsed.clear();
 	}
 	

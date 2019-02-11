@@ -33,3 +33,7 @@ void File::updateTime(){
 	temp[strlen(temp)-1] = '\0';
 	timeStamp = temp;
 }
+
+void File::setPerm(const string& newPerm){
+	permissions = newPerm;
+}
