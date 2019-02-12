@@ -51,6 +51,11 @@ void Folder:: touch(const string& fileName){
 			i.updateTime();
 		}
 	}
+	for (const auto i: folders){
+		if(i->getName() == fileName){
+			exist = true;
+		}
+	}
 	if(!exist){
 		files.push_back(File(fileName));
 	}
@@ -58,12 +63,18 @@ void Folder:: touch(const string& fileName){
 
 void Folder::mkdir(const string& dirName){
 	bool exist = false;
-	for (auto i: folders){
-		if(i->getName() == dirName)
+	for (const auto i: folders){
+		if(i->getName() == dirName){
 			exist = true;
+		}
+	}
+	for (const auto i: files){
+		if(i.getName() == dirName){
+			exist = true;
+		}
 	}
 	if(exist){
-		cout << "mkdir: '" << dirName << "' directory already exists." << endl;
+		cout << "mkdir: '" << dirName << "' already exists." << endl;
 	}
 	else{
 		auto newFolder = new Folder();
@@ -131,7 +142,7 @@ void Folder::pwd(){
 		path = cur->name + "/" +  path;
 		cur = cur->parent;
 	}
-	path = "/" + cur->name + "/" + path;
+	path = "/" + path;
 	cout << path << endl;
 }
 
@@ -203,7 +214,7 @@ void Folder::chmod(const string& obj, const string& perm){
 
 	for (int i = 0; i < perm.size(); i++){
 		if(perm[i] < '0' || perm[i] > '7'){
-			cout << "chmod: invalid mode: " << obj << endl;
+			cout << "chmod: invalid mode: " << perm << endl;
 			return;
 		}
 		else{

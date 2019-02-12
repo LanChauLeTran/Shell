@@ -14,7 +14,7 @@ class Folder{
 		vector<Folder* > folders;
 	
 	public:
-		Folder(): name("root"), parent(nullptr) {}
+		Folder(): name("/"), parent(nullptr) {}
 		Folder(const string& folderName);
 		~Folder();
 
